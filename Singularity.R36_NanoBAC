@@ -33,7 +33,7 @@ export R_VERSION
   apt-get install -y default-jdk
   R CMD javareconf
 
-# installing packages from cran
+# installing packages from CRAN
   R --slave -e 'install.packages("rJava",repos="https://cran.rstudio.com/")'
   R --slave -e 'install.packages("curl",repos="https://cran.rstudio.com/")'
   R --slave -e 'install.packages("devtools",repos="https://cran.rstudio.com/")'
