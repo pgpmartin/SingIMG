@@ -27,7 +27,7 @@ export R_VERSION
 # install some necessary packages
   apt-get -y update --fix-missing
   apt-get install -y apt-transport-https apt-utils software-properties-common
-  apt-get install wget ca-certificates curl git
+  apt-get install --yes wget ca-certificates curl git
   apt-get install --yes libcurl4-gnutls-dev libxml2-dev libssl-dev libgit2-dev libssh2-1-dev
   apt-get install -y default-jre
   apt-get install -y default-jdk
