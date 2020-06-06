@@ -1,0 +1,55 @@
+Bootstrap: docker
+From: r-base:3.6.3
+
+%labels
+Author pgp.martin@gmail.com
+R_Version 3.6.3
+R_bioconductor True
+
+%help
+Container with R 3.6.3 and the NanoBAC R package.
+Runs Rscript by default.
+
+%environment
+R_VERSION=3.6.3
+export R_VERSION
+
+%apprun R
+  exec R "$@"
+
+%apprun Rscript
+  exec Rscript "$@"
+
+%runscript
+  exec Rscript "$@"
+
+%post
+# install some necessary packages
+  apt-get -y update --fix-missing
+  apt-get install -y apt-transport-https apt-utils software-properties-common
+  apt-get install wget ca-certificates curl git
+  apt-get install --yes libcurl4-gnutls-dev libxml2-dev libssl-dev libgit2-dev libssh2-1-dev
+  apt-get install -y default-jre
+  apt-get install -y default-jdk
+  R CMD javareconf
+
+# installing packages from cran
+  R --slave -e 'install.packages("rJava",repos="https://cran.rstudio.com/")'
+  R --slave -e 'install.packages("curl",repos="https://cran.rstudio.com/")'
+  R --slave -e 'install.packages("devtools",repos="https://cran.rstudio.com/")'
+  R --slave -e 'install.packages(c("BAMMtools", "rlang", "dplyr", "ggplot2", "magrittr", "readr"),repos="https://cran.rstudio.com/")'
+  R --slave -e 'install.packages(c("cluster", "methods", "R.utils", "scales", "seqinr", "stats"),repos="https://cran.rstudio.com/")'
+  R --slave -e 'install.packages(c("stringr", "stringi", "tibble", "tidyselect", "utils"),repos="https://cran.rstudio.com/")'
+
+# installing packages from bioc
+  R --slave -e 'if (!requireNamespace("BiocManager",quietly=TRUE)) install.packages("BiocManager")'
+  R --slave -e 'BiocManager::install(version="3.10")'
+  R --slave -e 'BiocManager::install(c("Biostrings", "BSgenome", "GenomicRanges", "Rsamtools"),ask=FALSE)'
+
+# installing NanoBAC package from git repos
+  R --slave -e 'devtools::install_github("pgpmartin/NanoBAC", auth_token = "7fa6e88741d117c2600e0f968c4b9c14a3f6cf33")'
+
+# Clean-up
+  apt-get autoremove
+  apt-get clean
+
