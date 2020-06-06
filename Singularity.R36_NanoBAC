@@ -47,7 +47,7 @@ export R_VERSION
   R --slave -e 'BiocManager::install(c("Biostrings", "BSgenome", "GenomicRanges", "Rsamtools"),ask=FALSE)'
 
 # installing NanoBAC package from git repos
-  R --slave -e 'devtools::install_github("pgpmartin/NanoBAC", auth_token = "7fa6e88741d117c2600e0f968c4b9c14a3f6cf33")'
+  R --slave -e 'devtools::install_github("pgpmartin/NanoBAC")'
 
 # Clean-up
   apt-get autoremove
