@@ -29,21 +29,23 @@ export R_VERSION
   apt-get install -y apt-transport-https apt-utils software-properties-common
   apt-get install --yes wget ca-certificates curl git
   apt-get install --yes libcurl4-gnutls-dev libxml2-dev libssl-dev libgit2-dev libssh2-1-dev
-  apt-get install -y default-jre
-  apt-get install -y default-jdk
-  R CMD javareconf
+#  apt-get install -y default-jre
+#  apt-get install -y default-jdk
+#  R CMD javareconf
 
 # installing packages from CRAN
-  R --slave -e 'install.packages("rJava",repos="https://cran.rstudio.com/")'
+#  R --slave -e 'install.packages("rJava",repos="https://cran.rstudio.com/")'
   R --slave -e 'install.packages("curl",repos="https://cran.rstudio.com/")'
   R --slave -e 'install.packages("devtools",repos="https://cran.rstudio.com/")'
   R --slave -e 'install.packages(c("BAMMtools", "rlang", "dplyr", "ggplot2", "magrittr", "readr"),repos="https://cran.rstudio.com/")'
-  R --slave -e 'install.packages(c("cluster", "methods", "R.utils", "scales", "seqinr", "stats"),repos="https://cran.rstudio.com/")'
-  R --slave -e 'install.packages(c("stringr", "stringi", "tibble", "tidyselect", "utils"),repos="https://cran.rstudio.com/")'
+  R --slave -e 'install.packages(c("cluster", "R.utils", "scales", "seqinr"),repos="https://cran.rstudio.com/")'
+  R --slave -e 'install.packages(c("stringr", "stringi", "tibble", "tidyselect"),repos="https://cran.rstudio.com/")'
+#  R --slave -e 'install.packages(c("utils", "methods", "stats"),repos="https://cran.rstudio.com/")'
 
 # installing packages from bioc
   R --slave -e 'if (!requireNamespace("BiocManager",quietly=TRUE)) install.packages("BiocManager")'
   R --slave -e 'BiocManager::install(version="3.10")'
+  R --slave -e 'BiocManager::install()'
   R --slave -e 'BiocManager::install(c("Biostrings", "BSgenome", "GenomicRanges", "Rsamtools"),ask=FALSE)'
 
 # installing NanoBAC package from git repos
@@ -52,4 +54,3 @@ export R_VERSION
 # Clean-up
   apt-get autoremove
   apt-get clean
-
