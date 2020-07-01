@@ -5,4 +5,7 @@
 ## SingIMG:R36_NanoBAC
 R v3.6.3 with NanoBAC package
 
+## SingIMG:guppy v4.0.11
+Oxford Nanopore basecaller guppy v4.0.11
+
 
