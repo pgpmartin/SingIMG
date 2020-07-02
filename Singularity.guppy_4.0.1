@@ -21,22 +21,21 @@ From: ubuntu:18.04
         wget \
         build-essential \
         lsb-release
-    export PLATFORM=$(lsb_release -cs)
-    wget -O- https://mirror.oxfordnanoportal.com/apt/ont-repo.pub | apt-key add -
-    echo "deb http://mirror.oxfordnanoportal.com/apt ${PLATFORM}-stable non-free" | tee /etc/apt/sources.list.d/nanoporetech.sources.list
-    apt-get update
+#    export PLATFORM=$(lsb_release -cs)
+#    wget -O- https://mirror.oxfordnanoportal.com/apt/ont-repo.pub | apt-key add -
+#    echo "deb http://mirror.oxfordnanoportal.com/apt ${PLATFORM}-stable non-free" | tee /etc/apt/sources.list.d/nanoporetech.sources.list
+#    apt-get update
 
-    apt update
-    apt install ont-guppy
+#    apt-get install -y ont-guppy
     
-#    VERSION="4.0.11"
-#    URL="https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_${VERSION}_linux64.tar.gz"
-#    wget "$URL" -O - | tar xzf -
-#    cd ont-guppy || exit 1
-#    for binary in bin/guppy_*
-#    do
-#        ln -s "$(realpath "$binary")" "/usr/local/bin/$(basename "$binary")"
-#    done
+    VERSION="4.0.11"
+    URL="https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_${VERSION}_linux64.tar.gz"
+    wget "$URL" -O - | tar xzf -
+    cd ont-guppy || exit 1
+    for binary in bin/guppy_*
+    do
+        ln -s "$(realpath "$binary")" "/usr/local/bin/$(basename "$binary")"
+    done
 
 %test
     command -v guppy_aligner >/dev/null 2>&1 || { echo >&2 "I require guppy_aligner but it's not installed.  Aborting."; exit 1; }
