@@ -5,6 +5,9 @@ From: ubuntu:18.04
     export PATH="/usr/local/bin:$PATH"
 
 %post
+    # ================================
+    # PREPARE the system
+    # ================================
     apt-get update
     apt-get install -y software-properties-common
     apt-add-repository universe
@@ -14,20 +17,19 @@ From: ubuntu:18.04
     echo 'export LC_ALL=C.UTF-8' >> "$SINGULARITY_ENVIRONMENT"
     echo 'export LANG=C.UTF-8' >> "$SINGULARITY_ENVIRONMENT"
 
+    apt-get install -y \
+        wget \
+        build-essential
+
+    apt-get install -y \
+        libidn11 \
+        libidn11-dev
+
+ 
     # ================================
     # INSTALL guppy-gpu
     # ================================
-    apt-get install -y \
-        wget \
-        build-essential \
-        lsb-release
-#    export PLATFORM=$(lsb_release -cs)
-#    wget -O- https://mirror.oxfordnanoportal.com/apt/ont-repo.pub | apt-key add -
-#    echo "deb http://mirror.oxfordnanoportal.com/apt ${PLATFORM}-stable non-free" | tee /etc/apt/sources.list.d/nanoporetech.sources.list
-#    apt-get update
 
-#    apt-get install -y ont-guppy
-    
     VERSION="4.0.11"
     URL="https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_${VERSION}_linux64.tar.gz"
     wget "$URL" -O - | tar xzf -
@@ -45,15 +47,16 @@ From: ubuntu:18.04
     command -v guppy_basecaller_1d2 >/dev/null 2>&1 || { echo >&2 "I require guppy_basecaller_1d2 but it's not installed.  Aborting."; exit 1; }
     command -v guppy_basecaller_supervisor >/dev/null 2>&1 || { echo >&2 "I require guppy_basecaller_supervisor but it's not installed.  Aborting."; exit 1; }
 
+
 %labels
     Author Pascal Martin
     Version v4.0.11
 
 
 %help
-    This is an unofficial container for the GPU version of the Oxford Nanopore
-    Technologies basecaller guppy.
-    You can invoke canu with this container using the executable `guppy_basecaller`
+    Unofficial container for the GPU version of the Oxford Nanopore Technologies basecaller guppy.
+    You can invoke guppy with this container using the executable `guppy_basecaller`.
+    Add the `--nv` argument in order to use the host nvidia driver.
 
     # Example
     singularity exec --nv <container> guppy_basecaller --help
