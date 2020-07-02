@@ -35,16 +35,18 @@ _EOF_
     apt-get update
     apt-get install -y \
         apt-transport-https \
+        apt-utils \
         lsb-release \
         nvidia-modprobe \
         software-properties-common \
-        wget 
+        wget \
+        ca-certificates
 
     # byo nvidia driver
     add-apt-repository -y ppa:graphics-drivers/ppa
-    apt update
+    apt-get update
     apt-get install -y nvidia-graphics-drivers-440
-    ### Could also use nvidia-440 maybe?
+    ### apt-get install -y libcuda1-440 nvidia-440
 
     # install guppy from ONT repo
     export PLATFORM=$(lsb_release -cs) 
