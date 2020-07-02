@@ -5,10 +5,10 @@ From: ubuntu:18.04
     export PATH="/usr/local/bin:$PATH"
 
 %post
-    apt update
-    apt install -y software-properties-common
+    apt-get update
+    apt-get install -y software-properties-common
     apt-add-repository universe
-    apt update
+    apt-get update
     export LC_ALL=C.UTF-8
     export LANG=C.UTF-8
     echo 'export LC_ALL=C.UTF-8' >> "$SINGULARITY_ENVIRONMENT"
@@ -17,13 +17,13 @@ From: ubuntu:18.04
     # ================================
     # INSTALL guppy-gpu
     # ================================
-    apt install -y \
+    apt-get install -y \
         wget \
         build-essential \
         lsb-release
     export PLATFORM=$(lsb_release -cs)
-    wget -O- https://mirror.oxfordnanoportal.com/apt/ont-repo.pub | sudo apt-key add -
-    echo "deb http://mirror.oxfordnanoportal.com/apt ${PLATFORM}-stable non-free" | sudo tee /etc/apt/sources.list.d/nanoporetech.sources.list
+    wget -O- https://mirror.oxfordnanoportal.com/apt/ont-repo.pub | apt-key add -
+    echo "deb http://mirror.oxfordnanoportal.com/apt ${PLATFORM}-stable non-free" | tee /etc/apt/sources.list.d/nanoporetech.sources.list
     apt-get update
 
     apt update
