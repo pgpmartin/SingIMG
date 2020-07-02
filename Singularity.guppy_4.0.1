@@ -43,10 +43,28 @@ _EOF_
         ca-certificates
 
     # byo nvidia driver
-    add-apt-repository -y ppa:graphics-drivers/ppa
+    ### add-apt-repository -y ppa:graphics-drivers/ppa
+    ### apt-get update
+    ### apt-get install -y libcuda1-440 nvidia-440
+    ## Try https://askubuntu.com/questions/1077061/how-do-i-install-nvidia-and-cuda-drivers-into-ubuntu
+    rm /etc/apt/sources.list.d/cuda*
+    apt-get remove --autoremove nvidia-cuda-toolkit
+    apt-get remove --autoremove nvidia-*
+    add-apt-repository ppa:graphics-drivers/ppa
     apt-get update
-    apt-get install -y libcuda1-440 nvidia-440
-    ### apt-get install -y nvidia-graphics-drivers-440
+    apt install nvidia-driver-440
+    apt-key adv --fetch-keys  http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub
+    bash -c 'echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/cuda.list'
+    bash -c 'echo "deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/cuda_learn.list'
+    apt-get update
+    apt-get install cuda-10-2
+    apt-get install libcudnn7
+    printf "%s\n" '# set PATH for cuda 10.2 installation' >> ~/.profile
+    printf "%s\n%s\n%s\n%s\n" \
+      "if [ -d "/usr/local/cuda-10.2/bin/" ]; then" \
+      'export PATH=/usr/local/cuda-10.2/bin${PATH:+:${PATH}}' \
+      'export LD_LIBRARY_PATH=/usr/local/cuda-10.2/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}' \
+      "fi" >> ~/.profile
 
     # install guppy from ONT repo
     export PLATFORM=$(lsb_release -cs) 
