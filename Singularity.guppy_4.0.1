@@ -41,12 +41,12 @@ _EOF_
         wget 
 
     # byo nvidia driver
-    # add-apt-repository -y ppa:graphics-drivers/ppa
-    # apt update
-    # apt-get install -y \
-    #     --no-install-recommends \
-    #     libcuda1-430 \
-    #     nvidia-430
+    add-apt-repository -y ppa:graphics-drivers/ppa
+    apt update
+    apt-get install -y \
+        --no-install-recommends \
+        libcuda1-430 \
+        nvidia-430
     ### Could also use nvidia-440 maybe?
 
     # install guppy from ONT repo
