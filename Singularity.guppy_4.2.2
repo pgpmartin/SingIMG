@@ -1,0 +1,78 @@
+Bootstrap: docker
+From: ubuntu:16.04
+
+%environment
+    export PATH="/usr/local/bin:$PATH"
+
+%post
+    # ================================
+    # PREPARE the system
+    # ================================
+    apt-get update
+    apt-get install -y software-properties-common
+    apt-add-repository universe
+    apt-get update
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    echo 'export LC_ALL=C.UTF-8' >> "$SINGULARITY_ENVIRONMENT"
+    echo 'export LANG=C.UTF-8' >> "$SINGULARITY_ENVIRONMENT"
+
+    apt-get install -y \
+        wget \
+        build-essential
+
+    libboostVERSION="1.65.1"
+    apt-get install -y \
+        libidn11 \
+        libidn11-dev \
+        libgssapi-krb5-2 \
+        libboost-atomic${libboostVERSION} \
+        libboost-chrono${libboostVERSION}  \
+        libboost-date-time${libboostVERSION} \
+        libboost-filesystem${libboostVERSION} \
+        libboost-program-options${libboostVERSION} \
+        libboost-regex${libboostVERSION} \
+        libboost-system${libboostVERSION} \
+        libboost-log${libboostVERSION}
+
+ 
+    # ================================
+    # INSTALL guppy-gpu
+    # ================================
+
+    VERSION="4.2.2"
+    URL="https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_${VERSION}_linux64.tar.gz"
+    wget "$URL" -O - | tar xzf -
+    cd ont-guppy || exit 1
+    for binary in bin/guppy_*
+    do
+        ln -s "$(realpath "$binary")" "/usr/local/bin/$(basename "$binary")"
+    done
+
+%test
+    command -v guppy_aligner >/dev/null 2>&1 || \
+        { echo >&2 "I require guppy_aligner but it's not installed.  Aborting."; exit 1; }
+    command -v guppy_barcoder >/dev/null 2>&1 || \
+        { echo >&2 "I require guppy_barcoder but it's not installed.  Aborting."; exit 1; }
+    command -v guppy_basecall_server >/dev/null 2>&1 || \
+        { echo >&2 "I require guppy_basecall_server but it's not installed.  Aborting."; exit 1; }
+    command -v guppy_basecaller >/dev/null 2>&1 || \
+        { echo >&2 "I require guppy_basecaller but it's not installed.  Aborting."; exit 1; }
+    command -v guppy_basecaller_1d2 >/dev/null 2>&1 || \
+        { echo >&2 "I require guppy_basecaller_1d2 but it's not installed.  Aborting."; exit 1; }
+    command -v guppy_basecaller_supervisor >/dev/null 2>&1 || \
+        { echo >&2 "I require guppy_basecaller_supervisor but it's not installed.  Aborting."; exit 1; }
+
+
+%labels
+    Author Pascal Martin
+    Version v4.2.2
+
+
+%help
+    Unofficial container for the GPU version of the Oxford Nanopore Technologies basecaller guppy.
+    You can invoke guppy with this container using the executable `guppy_basecaller`.
+    Add the `--nv` argument in order to use the host nvidia driver.
+
+    # Example
+    singularity exec --nv <container> guppy_basecaller --help
