@@ -21,19 +21,21 @@ From: ubuntu:16.04
         wget \
         build-essential
 
-    libboostVERSION="1.65.1"
     apt-get install -y \
         libidn11 \
         libidn11-dev \
-        libgssapi-krb5-2 \
-        libboost-atomic${libboostVERSION} \
-        libboost-chrono${libboostVERSION}  \
-        libboost-date-time${libboostVERSION} \
-        libboost-filesystem${libboostVERSION} \
-        libboost-program-options${libboostVERSION} \
-        libboost-regex${libboostVERSION} \
-        libboost-system${libboostVERSION} \
-        libboost-log${libboostVERSION}
+        libgssapi-krb5-2
+
+#    libboostVERSION="1.65.1"
+#    apt-get install -y \
+#        libboost-atomic${libboostVERSION} \
+#        libboost-chrono${libboostVERSION}  \
+#        libboost-date-time${libboostVERSION} \
+#        libboost-filesystem${libboostVERSION} \
+#        libboost-program-options${libboostVERSION} \
+#        libboost-regex${libboostVERSION} \
+#        libboost-system${libboostVERSION} \
+#        libboost-log${libboostVERSION}
 
  
     # ================================
